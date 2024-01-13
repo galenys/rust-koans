@@ -41,7 +41,7 @@ fn duplicate_key() {
     let mut hm = HashMap::new();
     hm.insert("Harry Potter", "Sorcerer's Stone");
     hm.insert("Harry Potter", "Goblet of Fire");
-    assert_eq!(hm[&"Harry Potter"], "Sorcerer's Stone");
+    assert_eq!(hm[&"Harry Potter"], "Goblet of Fire");
 }
 
 // A HashMap's values, however, do not have this constraint
@@ -60,7 +60,7 @@ fn just_the_keys() {
     map.insert("Episode IV", "A New Hope");
     map.insert("Episode V", "Empire Strikes Back");
     map.insert("Episode VI", "Return of the Jedi");
-    let episodes = vec![map.keys()];
+    let episodes = map.keys().cloned().collect::<Vec<_>>();
     for episode in map.keys() {
         assert!(episodes.contains(episode));
     }
@@ -75,7 +75,7 @@ fn just_the_values() {
     map.insert("Red", "Fish");
     map.insert("Blue", "Fish");
     for num in map.values() {
-        assert_eq!(num, __);
+        assert_eq!(num, &"Fish");
     }
 }
 
@@ -87,7 +87,7 @@ fn iterating() {
     map.insert(2, 4);
     map.insert(3, 9);
     for (key, value) in map.iter() {
-        assert_eq!(&(__), value);
+        assert_eq!(&(key * key), value);
     }
 }
 
@@ -98,8 +98,8 @@ fn iterating_2() {
     map.insert(1, 1);
     map.insert(2, 4);
     map.insert(3, 9);
-    for __ in &map {
-        assert_eq!(__, value);
+    for (key, value) in &map {
+        assert_eq!(&(i8::pow(*key, 2)), value);
     }
 }
 
@@ -109,5 +109,6 @@ fn clearing() {
     let mut map = HashMap::new();
     map.insert("chairs", 30);
     map.insert("tables", 8);
+    map.clear();
     assert_eq!(map.get("chairs"), None);
 }
